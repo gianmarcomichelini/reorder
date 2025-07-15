@@ -1,8 +1,8 @@
-> **Assignment Due Date: Jul 6, 2025, 21:59 UTC**
 
-# Exam #2: "Restaurant"
+# `reorder`
 
-## Student: s346761 MICHELINI GIANMARCO
+
+A full-stack restaurant ordering system with 2FA-secured operations, built using React and RESTful APIs.
 
 ## React Client Application Routes
 
@@ -23,125 +23,6 @@
   - Users authenticated with TOTP can additionally cancel orders already confirmed by the restaurant
   - Purpose: Allow authenticated users to view orders confirmed by the restaurant
   - Access: Restricted to authenticated users
-
-## API Server
-- GET `/api/menu`
-  - Returns a list of available ingredients, dishes, sizes, incompatibilities and dependencies
-  - Status Codes: 200, 500
-  - Access: Public
-- GET `/api/users/:userId/orders`
-  - Path Param: userId (positive integer)
-  - Response: JSON array of orders
-  - Status Codes: 200, 422 (validation errors), 500
-  - Access: Authenticated users
-- POST `/api/orders`
-  - Create a new order with a dish, size, and (optional) ingredients
-  - Response: JSON object with created orderId and a message
-  - Status Codes: 201, 422, 400/500
-  - Access: Authenticated users
-  - Request Body (the order to insert):
-  - Request-body:
-    ``` json
-    {
-      "dish_name":"pasta",
-      "size_name":"small",
-      "ingredients":
-      [
-        {"ingredient_name":"tomatoes"},
-        {"ingredient_name":"olives"}
-      ]
-    }
-    ```
-  - Response-body:
-    ``` json
-    {
-      "orderId": 30,
-      "message": "Order validated and created successfully"
-    }
-    ```
-- DELETE `/api/orders/:orderId`
-  - Path Param: orderId (positive integer)
-  - Remove the order from the database given the id
-  - Side effect: Increment stock availability for the ingredients used in the deleted order
-  - Response: JSON object with deleted orderId and a message
-  - Status Codes: 201, 422, 400/500
-  - Access: Authenticated users with TOTP (second-factor) authentication.
-  - Response-body:
-    ``` json
-    {
-      "orderId": 30,
-      "message": "Order deleted successfully"
-    }
-    ```
-- GET `/api/login-local/current`:
-  - Get authenticated user info
-  - Status Codes: 200
-  - Access: Any user
-  - Response-body:
-    ``` json
-    {
-      "id":1,
-      "name":"marco",
-      "canDoTotp":true,
-      "isTotp":false
-    }
-    ```
-
-- POST `/api/login-local`:
-  - Authenticate user with username and password
-  - Status Codes: 200, 401
-  - Access: Any user
-  - Request-body:
-    ``` json
-    {
-      "username":"u1@p.it",
-      "password":"pwd"
-    }
-    ```
-  - Response-body:
-    ``` json
-    {
-      "name":"marco",
-    }
-    ```
-
-- DELETE `/api/login-local/current`:
-    - Log out the user
-    - Status Codes: 200
-    - Response-body:
-      ``` json
-      {
-        "message":"Logged out",
-      }
-      ```
-
-- POST `/api/login-totp`:
-  - Authenticate user with TOTP code
-  - Status Codes: 200
-  - Access: Authenticated users
-  - Request-body:
-    ``` json
-    {
-      "code": "229921"
-    }
-    ```
-  - Response-body:
-    ``` json
-    {
-      "message":"TOTP verified successfully"
-    }
-    ```
-
-## Database Tables
-
-- Table `users` - contains user accounts with unique username, unique email, hashed password, salt, and optional secret.
-- Table `dishes` - contains dishes available, each with unique name and optional description.
-- Table `sizes` - contains portion sizes with name, price, and maximum allowed ingredients.
-- Table `ingredients` - contains ingredients with a unique name, price, stock quantity, and a column indicating whether the ingredient has unlimited availability.
-- Table `orders` - contains user orders referencing user, dish, size, timestamp, and total price.
-- Table `ingredient_lines` - contains the many-to-many relation between orders and ingredients.
-- Table `ingredient_dependencies` - contains dependency relations between ingredients (ingredient A requires ingredient B).
-- Table `ingredient_incompatibilities` - contains incompatibility relations between ingredients (ingredient A incompatible with ingredient B).
 
 ## Main React Components
 
@@ -188,3 +69,123 @@ The password is "pwd" for each authenticated user.
    - hashed-pwd: 61f930e26fc33f14d87a86efa26aa613d601e9681e9de5a31c6e9a83f4dd367a
    - salt: AAAAAAAAAAAAAAAA
    - secret (2FA): ""
+
+
+## API Server
+- GET `/api/menu`
+    - Returns a list of available ingredients, dishes, sizes, incompatibilities and dependencies
+    - Status Codes: 200, 500
+    - Access: Public
+- GET `/api/users/:userId/orders`
+    - Path Param: userId (positive integer)
+    - Response: JSON array of orders
+    - Status Codes: 200, 422 (validation errors), 500
+    - Access: Authenticated users
+- POST `/api/orders`
+    - Create a new order with a dish, size, and (optional) ingredients
+    - Response: JSON object with created orderId and a message
+    - Status Codes: 201, 422, 400/500
+    - Access: Authenticated users
+    - Request Body (the order to insert):
+    - Request-body:
+      ``` json
+      {
+        "dish_name":"pasta",
+        "size_name":"small",
+        "ingredients":
+        [
+          {"ingredient_name":"tomatoes"},
+          {"ingredient_name":"olives"}
+        ]
+      }
+      ```
+    - Response-body:
+      ``` json
+      {
+        "orderId": 30,
+        "message": "Order validated and created successfully"
+      }
+      ```
+- DELETE `/api/orders/:orderId`
+    - Path Param: orderId (positive integer)
+    - Remove the order from the database given the id
+    - Side effect: Increment stock availability for the ingredients used in the deleted order
+    - Response: JSON object with deleted orderId and a message
+    - Status Codes: 201, 422, 400/500
+    - Access: Authenticated users with TOTP (second-factor) authentication.
+    - Response-body:
+      ``` json
+      {
+        "orderId": 30,
+        "message": "Order deleted successfully"
+      }
+      ```
+- GET `/api/login-local/current`:
+    - Get authenticated user info
+    - Status Codes: 200
+    - Access: Any user
+    - Response-body:
+      ``` json
+      {
+        "id":1,
+        "name":"marco",
+        "canDoTotp":true,
+        "isTotp":false
+      }
+      ```
+
+- POST `/api/login-local`:
+    - Authenticate user with username and password
+    - Status Codes: 200, 401
+    - Access: Any user
+    - Request-body:
+      ``` json
+      {
+        "username":"u1@p.it",
+        "password":"pwd"
+      }
+      ```
+    - Response-body:
+      ``` json
+      {
+        "name":"marco",
+      }
+      ```
+
+- DELETE `/api/login-local/current`:
+    - Log out the user
+    - Status Codes: 200
+    - Response-body:
+      ``` json
+      {
+        "message":"Logged out",
+      }
+      ```
+
+- POST `/api/login-totp`:
+    - Authenticate user with TOTP code
+    - Status Codes: 200
+    - Access: Authenticated users
+    - Request-body:
+      ``` json
+      {
+        "code": "229921"
+      }
+      ```
+    - Response-body:
+      ``` json
+      {
+        "message":"TOTP verified successfully"
+      }
+      ```
+
+## Database Tables
+
+- Table `users` - contains user accounts with unique username, unique email, hashed password, salt, and optional secret.
+- Table `dishes` - contains dishes available, each with unique name and optional description.
+- Table `sizes` - contains portion sizes with name, price, and maximum allowed ingredients.
+- Table `ingredients` - contains ingredients with a unique name, price, stock quantity, and a column indicating whether the ingredient has unlimited availability.
+- Table `orders` - contains user orders referencing user, dish, size, timestamp, and total price.
+- Table `ingredient_lines` - contains the many-to-many relation between orders and ingredients.
+- Table `ingredient_dependencies` - contains dependency relations between ingredients (ingredient A requires ingredient B).
+- Table `ingredient_incompatibilities` - contains incompatibility relations between ingredients (ingredient A incompatible with ingredient B).
