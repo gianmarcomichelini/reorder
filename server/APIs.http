@@ -1,0 +1,43 @@
+GET http://localhost:3001/api/ingredients
+
+###
+
+GET http://localhost:3001/api/sizes
+
+###
+
+GET http://localhost:3001/api/dishes
+
+###
+
+GET http://localhost:3001/api/users/1/orders
+
+###
+
+GET http://localhost:3001/api/orders/1
+
+###
+
+GET http://localhost:3001/api/orders/1/orderlines
+
+
+
+###
+
+POST http://localhost:3001/api/orders
+Content-Type: application/json
+
+
+{
+  "dish_name": "pizza",
+  "size_name": "small",
+  "ingredients": [
+    {"ingredient_name": "mozzarella"},
+    {"ingredient_name": "tomatoes"},
+    {"ingredient_name": "olives"}
+  ]
+}
+
+###
+
+DELETE http://localhost:3001/api/orders/17

@@ -1,0 +1,15 @@
+# dependencies
+node_modules/
+
+
+# misc
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# webstorm
+.idea
+
+# MacOS image of the directory
+Icon?
+
