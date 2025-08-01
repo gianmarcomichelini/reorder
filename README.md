@@ -2,7 +2,7 @@
 # `reorder`
 
 
-A full-stack restaurant ordering system with 2FA-secured operations, built using React, Node.js and Express (REST APIs).
+A full-stack restaurant ordering system with 2FA-secured operations, built using React, Node.js and Express.
 
 ## React Client Application Routes
 
